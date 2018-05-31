@@ -1,6 +1,8 @@
 // @author Rob W <http://stackoverflow.com/users/938089/rob-w>
 // Demo: var serialized_html = DOMtoString(document);
 
+//const speak = require("speakeasy-nlp");
+
 function DOMtoString(document_root) {
   var html = '',
     node = document_root.firstChild;
@@ -28,7 +30,26 @@ function DOMtoString(document_root) {
   return html;
 }
 
+function nlp(text) {
+  const result = speak.classify(text);
+  console.log(result);
+  if (!result.subject) {
+    return result.nouns.join(' ');
+  }
+  return result.subject;
+}
+
+function classifySearchText() {
+  const h1Text = document.getElementsByTagName('h1')[0].innerText;
+
+  if (!h1Text) {
+   return 'SHIIIIIIIIIT';
+  }
+  //return nlp(h1Text);
+  return h1Text;
+}
+
 chrome.runtime.sendMessage({
   action: "getSource",
-  source: document.getElementsByTagName('h1')[0].innerText
+  source: classifySearchText()
 });
