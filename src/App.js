@@ -33,10 +33,10 @@ class App extends Component {
     this.getTweets = this.getTweets.bind(this);
   }
   getTweets() {
-    //client.get('search/tweets', {q: 'trump', count: 3}, (error, tweets, response) => {
-    //  console.log(tweets)
-    // tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
-  // });
+    client.get('search/tweets', {q: 'trump', count: 3}, (error, tweets, response) => {
+     console.log(tweets)
+    tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
+  });
   }
 
   render() {
@@ -44,7 +44,7 @@ class App extends Component {
       <div className="App">
         <div className="search-line">
           <InputGroup>
-            <Input id="input"/>
+            {/* <Input id="input"/> */}
             <InputGroupAddon addonType="prepend">
               <Button onClick={this.getTweets}>I'm a button</Button>
             </InputGroupAddon>
@@ -56,15 +56,11 @@ class App extends Component {
   }
 }
 
-const generateList = (tweets) => {
-  {/*tweets && (<div className="result-list">*/}
-  {/*<ul>*/}
-    {/*{tweets.map((tweet) => (<li>{tweet.text}</li>))}*/}
-  {/*</ul>*/}
-  console.log('nihnas lepo')
- return (<div>
-   <TweetEmbed id='692527862369357824' options={{cards: 'hidden' }} />
+const generateList = (tweets) =>
+  tweets && (<div className="result-list">
+    {tweets.map((tweet) =>
+      (<TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />))}
    <Button color="link">Show more...</Button>
-</div>)};
+</div>);
 
 export default App;
