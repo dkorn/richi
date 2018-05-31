@@ -25,7 +25,8 @@ class App extends Component {
     this.state = {
       tweets: null,
       value: '',
-      copied: false
+      copied: false,
+      loading: true
     };
 
     this.getTweets = this.getTweets.bind(this);
@@ -52,17 +53,21 @@ class App extends Component {
     setTimeout(function() {
       const text = document.getElementById("hidden").value;
       console.log('nlp:', this.nlp(text));
-      this.setState({ value: this.nlp(text) });
+      this.setState({ value: this.nlp(text), loading: false });
     }.bind(this), 1500);
   }
 
   render() {
     console.log(this.state.value);
+    if (this.state.loading) {
+      return ( <div> <img style={{width: 200}} src="spinner.gif" /> <Input ref='hidden' id="hidden" style={{display: 'none'}}></Input></div>)
+    }
+
     return (
       <div className="App">
         <div className="search-line">
           <InputGroup>
-            <Input id="hidden" style={{display: 'none'}}></Input>
+            <Input ref='hidden' id="hidden" style={{display: 'none'}}></Input>
             <Input id="input" value={this.state.value} />
             <InputGroupAddon addonType="prepend">
               <Button onClick={this.getTweets}>Search</Button>
