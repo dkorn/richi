@@ -11,7 +11,7 @@
     "react-scripts": "1.1.4",
     "react-tweet-embed": "^1.1.0",
     "reactstrap": "^6.0.1",
-    "speakeasy-nlp": "0.2.2",
+    "speakeasy-nlp": "^0.2.2",
     "twitter": "1.7.1"
   },
   "scripts": {

@@ -35,7 +35,7 @@ class App extends Component {
     this.getTweets = this.getTweets.bind(this);
   }
   getTweets() {
-    client.get('search/tweets', {q: 'trump', count: 3}, (error, tweets, response) => {
+    client.get('search/tweets', {q: this.state.value, count: 3}, (error, tweets, response) => {
      console.log(tweets)
     tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
   });
