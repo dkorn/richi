@@ -63,7 +63,7 @@ const generateList = (tweets) => {
   {/*</ul>*/}
   console.log('nihnas lepo')
  return (<div>
-   <TweetEmbed id='692527862369357824' />
+   <TweetEmbed id='692527862369357824' options={{cards: 'hidden' }} />
    <Button color="link">Show more...</Button>
 </div>)};
 
