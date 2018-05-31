@@ -30,17 +30,37 @@ class App extends Component {
     };
 
     this.getTweets = this.getTweets.bind(this);
+    this.nlp = this.nlp.bind(this);
+    this.sortTweets = this.sortTweets.bind(this);
+    this.compareByFavourites = this.compareByFavourites.bind(this);
+    this.getFavoriteCount = this.getFavoriteCount.bind(this);
+  }
+  getFavoriteCount(tweet) {
+    const favoriteCount = tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count;
+    return favoriteCount;
+  }
+  compareByFavourites(a, b) {
+    const favCountA = this.getFavoriteCount(a);
+    const favCountB = this.getFavoriteCount(b);
+    if (favCountA < favCountB)
+      return 1;
+    if (favCountA > favCountB)
+      return -1;
+    return 0;
+  }
+  sortTweets(tweets) {
+    return tweets.sort(this.compareTweets);
   }
   getTweets() {
     client.get('search/tweets', {q: this.state.value, count: 3}, (error, tweets, response) => {
-      console.log(tweets)
-      tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
+      tweets && tweets.statuses && this.setState({ tweets: this.sortTweets(tweets.statuses) });
     });
   }
   nlp(text) {
     const result = speak.classify(text);
+    // delete when we're happy w/ the results
     console.log(result);
-    if (result.subject) {
+    if (result.nouns && result.nouns.length) {
       return result.nouns.join(' ').replace(/[.\\\/]+/g, '');
     } else if (result.subject) {
       return result.subject;
@@ -52,7 +72,6 @@ class App extends Component {
     console.log('did mount');
     setTimeout(function() {
       const text = document.getElementById("hidden").value;
-      console.log('nlp:', this.nlp(text));
       this.setState({ value: this.nlp(text), loading: false });
     }.bind(this), 1500);
   }
