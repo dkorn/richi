@@ -9,6 +9,10 @@ import { InputGroup,
 import Twitter from 'twitter';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import TweetEmbed from 'react-tweet-embed';
+import request from 'superagent';
+import GifList from './GifList';
+
+
 const config = require('./config');
 const speak = require('speakeasy-nlp');
 
@@ -28,7 +32,8 @@ class App extends Component {
       numberOfTweetsToDisplay: 3,
       value: '',
       copied: false,
-      loading: true
+      loading: true,
+      gifs: []
     };
 
     this.getTweets = this.getTweets.bind(this);
@@ -85,7 +90,14 @@ class App extends Component {
   componentDidMount() {
     setTimeout(function() {
       const text = document.getElementById("hidden").value;
-      this.setState({ value: this.nlp(text), loading: false });
+      var nlpresult = this.nlp(text);
+      this.setState({ value: nlpresult, loading: false });
+      var url = `http://api.giphy.com/v1/gifs/search?q=${nlpresult.replace(/\s/g, '+')}&api_key=oICbJ6LMTfwuBvZnhFlX30FNhh7mBsav`;
+
+      request.get(url, (err, res) => {
+        console.log(res)
+        this.setState({ gifs: res.body.data })
+      });
     }.bind(this), 1500);
   }
 
@@ -111,7 +123,7 @@ class App extends Component {
             {this.state.displayedTweets.map((tweet) =>
               (<div className="tweet-embed">
                 <TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
-                <Input value={`<a class="twitter-timeline" href="https://twitter.com/$              {tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
+                <Input value={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
                 <CopyToClipboard text={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`}>
                   <Button>{`</>`}</Button>
                 </CopyToClipboard>
@@ -119,6 +131,7 @@ class App extends Component {
            <Button onClick={this.loadMoreTweets} color="link">Show more...</Button>
           </div>}
         </div>
+        <GifList gifs={this.state.gifs}/>
       </div>
     );
   }
