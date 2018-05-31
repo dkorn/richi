@@ -12,27 +12,53 @@ import { InputGroup,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 
+import Twitter from 'twitter';
+const config = require('./config');
+
+var client = new Twitter({
+  consumer_key: config.consumerKey,
+  consumer_secret: config.consumerSecret,
+  access_token_key: config.accessToken,
+  access_token_secret: config.accessTokenSecret
+});
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tweets: null
+    };
+
+    this.getTweets = this.getTweets.bind(this);
+  }
+  getTweets() {
+    console.log('## clicked')
+    this.setState({ tweets: [{text: 'asdasd'}] });
+  }
+
   render() {
     return (
       <div className="App">
         <div className="search-line">
           <InputGroup>
-            <InputGroupAddon addonType="prepend"><Button>I'm a button</Button></InputGroupAddon>
             <Input />
+            <InputGroupAddon addonType="prepend">
+              <Button onClick={this.getTweet}>I'm a button</Button>
+            </InputGroupAddon>
           </InputGroup>
         </div>
-        <div className="result-list">
-          <ul>
-            <li>Result</li>
-            <li>Result</li>
-            <li>Result</li>
-            <li>Result</li>
-          </ul>
-        </div>
+        <div>{generateList(this.state.tweets)}</div>
       </div>
     );
   }
 }
+
+const generateList = (tweets) => 
+  tweets && (<div className="result-list">
+  <ul>
+    {tweets.map((tweet) => (<li>{tweet.text}</li>))}
+  </ul>
+  <Button color="link">Show more...</Button>
+</div>);
 
 export default App;
