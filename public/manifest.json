@@ -8,7 +8,7 @@
   },
   "version": "1.0",
   "permissions": ["https://*/", "http://*/", "activeTab", "tabs", "<all_urls>"],
-
+  "content_security_policy": "script-src https://* 'self' https://platform.twitter.com https://cdn.syndication.twimg.com; object-src 'self'",
   "manifest_version": 2
 }
 

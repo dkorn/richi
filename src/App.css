@@ -30,3 +30,37 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+blockquote.twitter-tweet {
+  display: inline-block !important ;
+  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif !important ;
+  font-size: 12px !important ;
+  font-weight: bold !important ;
+  line-height: 16px !important ;
+  border-color: #eee #ddd #bbb !important ;
+  border-radius: 5px !important ;
+  border-style: solid !important ;
+  border-width: 1px !important ;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) !important ;
+  margin: 10px 5px !important ;
+  padding: 0 16px 16px 16px !important ;
+  max-width: 468px !important ;
+}
+
+blockquote.twitter-tweet p {
+  font-size: 16px !important ;
+  font-weight: normal !important ;
+  line-height: 20px !important ;
+}
+
+blockquote.twitter-tweet a {
+  color: inherit !important ;
+  font-weight: normal !important ;
+  text-decoration: none !important ;
+  outline: 0 none !important ;
+}
+
+blockquote.twitter-tweet a:hover,
+blockquote.twitter-tweet a:focus {
+  text-decoration: underline !important ;
+}
