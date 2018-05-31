@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { InputGroup,
   InputGroupAddon,
-  InputGroupButtonDropdown,
   InputGroupDropdown,
   Input,
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  Button} from 'reactstrap';
 
 import Twitter from 'twitter';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import TweetEmbed from 'react-tweet-embed';
 const config = require('./config');
 const speak = require('speakeasy-nlp');
@@ -29,16 +24,17 @@ class App extends Component {
     super(props);
     this.state = {
       tweets: null,
-      value: ''
+      value: '',
+      copied: false
     };
 
     this.getTweets = this.getTweets.bind(this);
   }
   getTweets() {
     client.get('search/tweets', {q: this.state.value, count: 3}, (error, tweets, response) => {
-     console.log(tweets)
-    tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
-  });
+      console.log(tweets)
+      tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
+    });
   }
   nlp(text) {
     const result = speak.classify(text);
@@ -69,7 +65,7 @@ class App extends Component {
             <Input id="hidden" style={{display: 'none'}}></Input>
             <Input id="input" value={this.state.value} />
             <InputGroupAddon addonType="prepend">
-              <Button onClick={this.getTweets}>I'm a button</Button>
+              <Button onClick={this.getTweets}>Search</Button>
             </InputGroupAddon>
           </InputGroup>
         </div>
@@ -83,9 +79,9 @@ const generateList = (tweets) =>
   tweets && (<div className="result-list">
     {tweets.map((tweet) =>
       (<div><TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
-      <Input value={
-        `<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} 
-        />
+        <CopyToClipboard text={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`}>
+          <Button>Copy to clipboard</Button>
+        </CopyToClipboard>
       </div>))}
    <Button color="link">Show more...</Button>
 </div>);
