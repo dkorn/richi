@@ -1,3 +1,7 @@
+#root {
+  min-width: 500px;
+}
+
 .App {
   text-align: center;
 }
