@@ -32,8 +32,9 @@ class App extends Component {
     this.getTweets = this.getTweets.bind(this);
   }
   getTweets() {
-    console.log('## clicked')
-    this.setState({ tweets: [{text: 'asdasd'}] });
+    client.get('search/tweets', {q: 'trump', count: 3}, (error, tweets, response) => {
+      tweets && tweets.statuses && this.setState({ tweets: tweets.statuses });
+   });
   }
 
   render() {
@@ -43,7 +44,7 @@ class App extends Component {
           <InputGroup>
             <Input />
             <InputGroupAddon addonType="prepend">
-              <Button onClick={this.getTweet}>I'm a button</Button>
+              <Button onClick={this.getTweets}>I'm a button</Button>
             </InputGroupAddon>
           </InputGroup>
         </div>
