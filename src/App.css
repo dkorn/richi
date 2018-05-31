@@ -1,9 +1,8 @@
-#root {
-  min-width: 500px;
-}
+
 
 .App {
   text-align: center;
+  min-width: 500px;
 }
 
 .App-logo {
