@@ -82,7 +82,11 @@ class App extends Component {
 const generateList = (tweets) =>
   tweets && (<div className="result-list">
     {tweets.map((tweet) =>
-      (<TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />))}
+      (<div><TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
+      <Input value={
+        `<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} 
+        />
+      </div>))}
    <Button color="link">Show more...</Button>
 </div>);
 
