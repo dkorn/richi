@@ -78,9 +78,11 @@ class App extends Component {
 const generateList = (tweets) =>
   tweets && (<div className="result-list">
     {tweets.map((tweet) =>
-      (<div><TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
+      (<div className="tweet-embed">
+        <TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
+        <Input value={`<a class="twitter-timeline" href="https://twitter.com/$              {tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
         <CopyToClipboard text={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`}>
-          <Button>Copy to clipboard</Button>
+          <Button>{`</>`}</Button>
         </CopyToClipboard>
       </div>))}
    <Button color="link">Show more...</Button>
