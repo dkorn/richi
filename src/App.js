@@ -49,11 +49,11 @@ class App extends Component {
     return 0;
   }
   sortTweets(tweets) {
-    return tweets.sort(this.compareTweets);
+    return tweets.sort(this.compareByFavourites);
   }
   getTweets() {
-    client.get('search/tweets', {q: this.state.value, count: 3}, (error, tweets, response) => {
-      tweets && tweets.statuses && this.setState({ tweets: this.sortTweets(tweets.statuses) });
+    client.get('search/tweets', {q: this.state.value, count: 100}, (error, tweets, response) => {
+      tweets && tweets.statuses && this.setState({ tweets: this.sortTweets(tweets.statuses).slice(0,3) });
     });
   }
   nlp(text) {
