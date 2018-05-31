@@ -43,7 +43,7 @@ class App extends Component {
       <div className="App">
         <div className="search-line">
           <InputGroup>
-            <Input />
+            <Input id="input"/>
             <InputGroupAddon addonType="prepend">
               <Button onClick={this.getTweets}>I'm a button</Button>
             </InputGroupAddon>

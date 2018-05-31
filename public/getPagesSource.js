@@ -30,5 +30,5 @@ function DOMtoString(document_root) {
 
 chrome.runtime.sendMessage({
   action: "getSource",
-  source: DOMtoString(document)
+  source: document.getElementsByTagName('h1')[0].innerText
 });

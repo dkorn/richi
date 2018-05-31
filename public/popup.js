@@ -1,7 +1,10 @@
 chrome.runtime.onMessage.addListener(function(request, sender) {
-  var message = document.getElementById('message')
+  var input = document.getElementById('input')
+
+
+  console.log(request)
   if (request.action == "getSource") {
-    message.innerText = request.source;
+    input.value = request.source;
   }
 });
 
@@ -19,7 +22,6 @@ function onWindowLoad() {
       message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
     }
   });
-
 }
 
 window.onload = onWindowLoad;
