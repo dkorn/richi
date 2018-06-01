@@ -61,10 +61,18 @@ class App extends Component {
   }
   getTweets() {
     client.get('search/tweets', {q: this.state.value, count: 100}, (error, tweets, response) => {
+      console.log('tweets', tweets)
       if (tweets && tweets.statuses) {
         const sortedTweets = this.sortTweets(tweets.statuses);
         this.setState({ tweets: sortedTweets, displayedTweets: sortedTweets.slice(0, this.state.numberOfTweetsToDisplay) });
       }
+    });
+
+    var url = `http://api.giphy.com/v1/gifs/search?q=${this.state.value.replace(/\s/g, '+')}&api_key=oICbJ6LMTfwuBvZnhFlX30FNhh7mBsav`;
+
+    request.get(url, (err, res) => {
+      console.log(res)
+      this.setState({ gifs: res.body.data })
     });
   }
   nlp(text) {
@@ -92,12 +100,6 @@ class App extends Component {
       const text = document.getElementById("hidden").value;
       var nlpresult = this.nlp(text);
       this.setState({ value: nlpresult, loading: false });
-      var url = `http://api.giphy.com/v1/gifs/search?q=${nlpresult.replace(/\s/g, '+')}&api_key=oICbJ6LMTfwuBvZnhFlX30FNhh7mBsav`;
-
-      request.get(url, (err, res) => {
-        console.log(res)
-        this.setState({ gifs: res.body.data })
-      });
     }.bind(this), 1500);
   }
 
