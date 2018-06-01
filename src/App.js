@@ -112,7 +112,7 @@ class App extends Component {
               (<div className="tweet-embed">
                 <TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
                 <Input value={`<a class="twitter-timeline" href="https://twitter.com/$              {tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
-                <CopyToClipboard text={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`}>
+                <CopyToClipboard text={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`}>
                   <Button>{`</>`}</Button>
                 </CopyToClipboard>
               </div>))}
