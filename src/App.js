@@ -24,6 +24,8 @@ class App extends Component {
     super(props);
     this.state = {
       tweets: null,
+      displayedTweets: null,
+      numberOfTweetsToDisplay: 3,
       value: '',
       copied: false,
       loading: true
@@ -34,6 +36,7 @@ class App extends Component {
     this.sortTweets = this.sortTweets.bind(this);
     this.compareByFavourites = this.compareByFavourites.bind(this);
     this.getFavoriteCount = this.getFavoriteCount.bind(this);
+    this.loadMoreTweets = this.loadMoreTweets.bind(this);
   }
   getFavoriteCount(tweet) {
     const favoriteCount = tweet.retweeted_status ? tweet.retweeted_status.favorite_count : tweet.favorite_count;
@@ -53,7 +56,10 @@ class App extends Component {
   }
   getTweets() {
     client.get('search/tweets', {q: this.state.value, count: 100}, (error, tweets, response) => {
-      tweets && tweets.statuses && this.setState({ tweets: this.sortTweets(tweets.statuses).slice(0,3) });
+      if (tweets && tweets.statuses) {
+        const sortedTweets = this.sortTweets(tweets.statuses);
+        this.setState({ tweets: sortedTweets, displayedTweets: sortedTweets.slice(0, this.state.numberOfTweetsToDisplay) });
+      }
     });
   }
   nlp(text) {
@@ -68,8 +74,15 @@ class App extends Component {
       return result.tokens.join(' ').replace(/[.\\\/]+/g, '');
     }
   }
+  loadMoreTweets() {
+    console.log('load more');
+    const tweetsNumber = this.state.numberOfTweetsToDisplay + 3;
+    this.setState({
+      numberOfTweetsToDisplay: tweetsNumber,
+      displayedTweets: this.state.tweets.slice(0, tweetsNumber)
+    })
+  }
   componentDidMount() {
-    console.log('did mount');
     setTimeout(function() {
       const text = document.getElementById("hidden").value;
       this.setState({ value: this.nlp(text), loading: false });
@@ -93,23 +106,22 @@ class App extends Component {
             </InputGroupAddon>
           </InputGroup>
         </div>
-        <div>{generateList(this.state.tweets)}</div>
+        <div>
+          { this.state.displayedTweets && <div className="result-list">
+            {this.state.displayedTweets.map((tweet) =>
+              (<div className="tweet-embed">
+                <TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
+                <Input value={`<a class="twitter-timeline" href="https://twitter.com/$              {tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
+                <CopyToClipboard text={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`}>
+                  <Button>{`</>`}</Button>
+                </CopyToClipboard>
+              </div>))}
+           <Button onClick={this.loadMoreTweets} color="link">Show more...</Button>
+          </div>}
+        </div>
       </div>
     );
   }
 }
-
-const generateList = (tweets) =>
-  tweets && (<div className="result-list">
-    {tweets.map((tweet) =>
-      (<div className="tweet-embed">
-        <TweetEmbed id={tweet.id_str} options={{cards: 'hidden' }} />
-        <Input value={`<a class="twitter-timeline" href="https://twitter.com/$              {tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`} />
-        <CopyToClipboard text={`<a class="twitter-timeline" href="https://twitter.com/${tweet.user.screen_name}">Tweets by @${tweet.user.screen_name}</a>`}>
-          <Button>{`</>`}</Button>
-        </CopyToClipboard>
-      </div>))}
-   <Button color="link">Show more...</Button>
-</div>);
 
 export default App;
